@@ -241,8 +241,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         int clipRestoreCount = canvas.save();
         canvas.clipRect(mViewPortHandler.getContentRect());
 
-        mRenderer.drawData(canvas);
-
         if (!mXAxis.isDrawGridLinesBehindDataEnabled())
             mXAxisRenderer.renderGridLines(canvas);
 
@@ -251,6 +249,18 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         if (!mAxisRight.isDrawGridLinesBehindDataEnabled())
             mAxisRendererRight.renderGridLines(canvas);
+        if(!(this instanceof BarChart)){
+            if (mXAxis.isEnabled() && !mXAxis.isDrawLimitLinesBehindDataEnabled())
+                mXAxisRenderer.renderLimitLines(canvas);
+        }
+
+        if (mAxisLeft.isEnabled() && !mAxisLeft.isDrawLimitLinesBehindDataEnabled())
+            mAxisRendererLeft.renderLimitLines(canvas);
+
+        if (mAxisRight.isEnabled() && !mAxisRight.isDrawLimitLinesBehindDataEnabled())
+            mAxisRendererRight.renderLimitLines(canvas);
+
+        mRenderer.drawData(canvas);
 
         // if highlighting is enabled
         if (valuesToHighlight())
@@ -260,20 +270,14 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         canvas.restoreToCount(clipRestoreCount);
 
         mRenderer.drawExtras(canvas);
-
-        if (mXAxis.isEnabled() && !mXAxis.isDrawLimitLinesBehindDataEnabled())
-            mXAxisRenderer.renderLimitLines(canvas);
-
-        if (mAxisLeft.isEnabled() && !mAxisLeft.isDrawLimitLinesBehindDataEnabled())
-            mAxisRendererLeft.renderLimitLines(canvas);
-
-        if (mAxisRight.isEnabled() && !mAxisRight.isDrawLimitLinesBehindDataEnabled())
-            mAxisRendererRight.renderLimitLines(canvas);
+        if(this instanceof BarChart){
+            if (mXAxis.isEnabled() && !mXAxis.isDrawLimitLinesBehindDataEnabled())
+                mXAxisRenderer.renderLimitLines(canvas);
+        }
 
         mXAxisRenderer.renderAxisLabels(canvas);
         mAxisRendererLeft.renderAxisLabels(canvas);
         mAxisRendererRight.renderAxisLabels(canvas);
-
 
         mAxisRendererLeft.renderAxisLine(canvas);
         mAxisRendererRight.renderAxisLine(canvas);

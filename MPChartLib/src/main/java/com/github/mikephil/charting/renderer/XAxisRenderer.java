@@ -187,9 +187,9 @@ public class XAxisRenderer extends AxisRenderer {
 
             // only fill x values
             if (centeringEnabled) {
-                positions[i] = mXAxis.mCenteredEntries[i / 2];
+                positions[i] = mXAxis.mCenteredEntries[i / 2] + mXAxis.getLabelXOffSet();
             } else {
-                positions[i] = mXAxis.mEntries[i / 2];
+                positions[i] = mXAxis.mEntries[i / 2] + mXAxis.getLabelXOffSet();
             }
         }
 
@@ -401,4 +401,6 @@ public class XAxisRenderer extends AxisRenderer {
             }
         }
     }
+
+
 }

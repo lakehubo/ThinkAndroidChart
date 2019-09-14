@@ -52,6 +52,8 @@ public class XAxis extends AxisBase {
      */
     private XAxisPosition mPosition = XAxisPosition.TOP;
 
+    private float labelXOffSet = 0f;
+
     /**
      * enum for the position of the x-labels relative to the chart
      */
@@ -63,6 +65,10 @@ public class XAxis extends AxisBase {
         super();
 
         mYOffset = Utils.convertDpToPixel(4.f); // -3
+    }
+
+    public float getLabelXOffSet(){
+        return labelXOffSet;
     }
 
     /**
@@ -114,5 +120,14 @@ public class XAxis extends AxisBase {
      */
     public boolean isAvoidFirstLastClippingEnabled() {
         return mAvoidFirstLastClipping;
+    }
+
+    /**
+     * 设置label的偏移
+     *
+     * @param xOffset
+     */
+    public void setLabelXOffset(float xOffset) {
+        labelXOffSet = xOffset;
     }
 }

@@ -46,13 +46,14 @@ public class HorizontalScrollActivity extends AppCompatActivity {
         chart.setDrawValueAboveBar(false);//数据位置是否在柱状体上方
         chart.setHighlightFullBarEnabled(false);
 
-        chart.zoom(3f, 0.7f, 0, 0);//横向放大
+        chart.zoom(3f, 1f, 0, 0);//横向放大
 
         // change the position of the y-labels
         YAxis leftAxis = chart.getAxisLeft();
         MyValueFormatter valueFormatter = new MyValueFormatter("");
         leftAxis.setValueFormatter(valueFormatter);
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+        leftAxis.setAxisMinimum(0);
+        leftAxis.setAxisMaximum(500);// this replaces setStartAtZero(true)
         leftAxis.setDrawGridLines(false);
         chart.getAxisRight().setEnabled(false);
 

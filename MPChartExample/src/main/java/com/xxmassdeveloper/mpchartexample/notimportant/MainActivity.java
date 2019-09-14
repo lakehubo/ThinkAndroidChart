@@ -44,6 +44,7 @@ import com.xxmassdeveloper.mpchartexample.RadarChartActivity;
 import com.xxmassdeveloper.mpchartexample.RealtimeLineChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScatterChartActivity;
 import com.xxmassdeveloper.mpchartexample.ScrollViewActivity;
+import com.xxmassdeveloper.mpchartexample.SmoothingLineActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivity;
 import com.xxmassdeveloper.mpchartexample.StackedBarActivityNegative;
 import com.xxmassdeveloper.mpchartexample.VerticalBarActivity;
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         objects.add(37, new ContentItem("ThinkHome_Bar", "custom design Bar widget for think home."));
         objects.add(38, new ContentItem("ThinkHome_Pie", "custom design Pie widget for think home."));
         objects.add(39, new ContentItem("ThinkHome_Vertical", "custom design Vertical widget for think home."));
+        objects.add(40, new ContentItem("ThinkHome_Line", "custom design Line widget for think home."));
 
         MyAdapter adapter = new MyAdapter(this, objects);
 
@@ -248,6 +250,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
             case 39:
                 i = new Intent(this, VerticalBarActivity.class);
                break;
+            case 40:
+                i = new Intent(this, SmoothingLineActivity.class);
+                break;
         }
 
         if (i != null) startActivity(i);
