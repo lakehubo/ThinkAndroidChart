@@ -44,6 +44,11 @@ public class LimitLine extends ComponentBase {
     }
 
     /**
+     * 是否画底部限制线
+     */
+    private boolean mDrawLimitBottomLineBehindData = false;
+
+    /**
      * Constructor with limit.
      * 
      * @param limit - the position (the value) on the y-axis (y-value) or x-axis
@@ -72,6 +77,14 @@ public class LimitLine extends ComponentBase {
      */
     public float getLimit() {
         return mLimit;
+    }
+
+    public boolean isDrawLimitBottomLineBehindData() {
+        return mDrawLimitBottomLineBehindData;
+    }
+
+    public void setDrawLimitBottomLineBehindData(boolean enable) {
+        this.mDrawLimitBottomLineBehindData = enable;
     }
 
     /**

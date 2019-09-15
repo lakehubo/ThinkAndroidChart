@@ -227,6 +227,7 @@ public class XAxisRenderer extends AxisRenderer {
     }
 
     protected void drawLabel(Canvas c, String formattedLabel, float x, float y, MPPointF anchor, float angleDegrees) {
+//        mAxisLabelPaint.setColor(Color.parseColor("#cbcbcb"));
         Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
     }
 
@@ -295,6 +296,7 @@ public class XAxisRenderer extends AxisRenderer {
     }
 
     protected float[] mRenderLimitLinesBuffer = new float[2];
+    protected float[] mRenderLimitBottomLinesBuffer = new float[2];
     protected RectF mLimitLineClippingRect = new RectF();
 
     /**
@@ -337,6 +339,63 @@ public class XAxisRenderer extends AxisRenderer {
 
             c.restoreToCount(clipRestoreCount);
         }
+    }
+
+    @Override
+    public void renderLimitBottomLines(Canvas c) {
+        List<LimitLine> limitLines = mXAxis.getLimitLines();
+
+        if (limitLines == null || limitLines.size() <= 0)
+            return;
+
+        float[] position = mRenderLimitBottomLinesBuffer;
+        position[0] = 0;
+        position[1] = 0;
+
+        for (int i = 0; i < limitLines.size(); i++) {
+
+            LimitLine l = limitLines.get(i);
+
+            if (!l.isEnabled())
+                continue;
+            if (!l.isDrawLimitBottomLineBehindData())
+                continue;
+            int clipRestoreCount = c.save();
+            mLimitLineClippingRect.set(mViewPortHandler.getContentRect());
+            mLimitLineClippingRect.inset(-l.getLineWidth(), 0.f);
+            mLimitLineClippingRect.bottom = relHeight;
+            c.clipRect(mLimitLineClippingRect);
+
+            position[0] = l.getLimit();
+            position[1] = 0.f;
+
+            mTrans.pointValuesToPixel(position);
+
+            renderLimitBottomLineLine(c, l, position);
+
+            c.restoreToCount(clipRestoreCount);
+        }
+    }
+
+    float[] mLimitBottomLineSegmentsBuffer = new float[4];
+    private Path mLimitBottomLinePath = new Path();
+    private void renderLimitBottomLineLine(Canvas c, LimitLine limitLine, float[] position) {
+        mLimitBottomLineSegmentsBuffer[0] = position[0];
+        mLimitBottomLineSegmentsBuffer[1] = mViewPortHandler.contentBottom();
+        mLimitBottomLineSegmentsBuffer[2] = position[0];
+//        mLimitLineSegmentsBuffer[3] = mViewPortHandler.contentBottom();
+        mLimitBottomLineSegmentsBuffer[3] = relHeight;
+
+        mLimitBottomLinePath.reset();
+        mLimitBottomLinePath.moveTo(mLimitBottomLineSegmentsBuffer[0], mLimitBottomLineSegmentsBuffer[1]);
+        mLimitBottomLinePath.lineTo(mLimitBottomLineSegmentsBuffer[2], mLimitBottomLineSegmentsBuffer[3]);
+
+        mLimitLinePaint.setStyle(Paint.Style.STROKE);
+        mLimitLinePaint.setColor(limitLine.getLineColor());
+        mLimitLinePaint.setStrokeWidth(limitLine.getLineWidth());
+        mLimitLinePaint.setPathEffect(limitLine.getDashPathEffect());
+
+        c.drawPath(mLimitBottomLinePath, mLimitLinePaint);
     }
 
     float[] mLimitLineSegmentsBuffer = new float[4];

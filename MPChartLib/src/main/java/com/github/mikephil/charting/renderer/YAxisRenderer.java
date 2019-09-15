@@ -117,7 +117,7 @@ public class YAxisRenderer extends AxisRenderer {
      * @param positions
      */
     protected void drawYLabels(Canvas c, float fixedPosition, float[] positions, float offset) {
-
+//        mAxisLabelPaint.setColor(Color.parseColor("#cbcbcb"));
         final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
         final int to = mYAxis.isDrawTopYLabelEntryEnabled()
                 ? mYAxis.mEntryCount

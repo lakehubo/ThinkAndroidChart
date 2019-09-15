@@ -1,11 +1,14 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Bitmap;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
@@ -27,6 +30,8 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
+
+import static android.view.View.LAYER_TYPE_SOFTWARE;
 
 public class LineChartRenderer extends LineRadarRenderer {
 
@@ -251,15 +256,24 @@ public class LineChartRenderer extends LineRadarRenderer {
             drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, mXBounds);
         }
 
+        //模糊线条
+        if (dataSet.isDrawShadowEnabled()) {
+            mRenderPaint.setMaskFilter(new BlurMaskFilter(12, BlurMaskFilter.Blur.NORMAL));
+        }
+
         mRenderPaint.setColor(dataSet.getColor());
 
         mRenderPaint.setStyle(Paint.Style.STROKE);
 
         trans.pathValueToPixel(cubicPath);
 
+
+
         mBitmapCanvas.drawPath(cubicPath, mRenderPaint);
 
         mRenderPaint.setPathEffect(null);
+
+        mRenderPaint.setMaskFilter(null);
     }
 
     protected void drawCubicFill(Canvas c, ILineDataSet dataSet, Path spline, Transformer trans, XBounds bounds) {
@@ -281,6 +295,13 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             drawFilledPath(c, spline, dataSet.getFillColor(), dataSet.getFillAlpha());
         }
+    }
+
+    protected void drawShadow(Canvas c, ILineDataSet dataSet, Path spline) {
+        int color = dataSet.getShadowColor();
+        mRenderPaint.setShadowLayer(10, 0, 3, color);
+        c.drawPath(spline, mRenderPaint);
+        mRenderPaint.setShadowLayer(0, 0, 0, 0);
     }
 
     private float[] mLineBuffer = new float[4];
@@ -578,8 +599,8 @@ public class LineChartRenderer extends LineRadarRenderer {
                         Utils.drawImage(
                                 c,
                                 icon,
-                                (int)(x + iconsOffset.x),
-                                (int)(y + iconsOffset.y),
+                                (int) (x + iconsOffset.x),
+                                (int) (y + iconsOffset.y),
                                 icon.getIntrinsicWidth(),
                                 icon.getIntrinsicHeight());
                     }

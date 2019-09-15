@@ -42,6 +42,16 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
      */
     private boolean mDrawFilled = false;
 
+    /**
+     * the color that is used for filling the line shadow
+     */
+    private int mShadowColor = Color.GRAY;
+
+    /**
+     * if true, the data will also be drawn shadow
+     */
+    private boolean mDrawShadow = false;
+
 
     public LineRadarDataSet(List<T> yVals, String label) {
         super(yVals, label);
@@ -130,5 +140,28 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
         lineRadarDataSet.mFillColor = mFillColor;
         lineRadarDataSet.mFillDrawable = mFillDrawable;
         lineRadarDataSet.mLineWidth = mLineWidth;
+    }
+
+    /**
+     * Sets the color that is used for filling line shadow.
+     *
+     * @param color
+     */
+    public void setShadowColor(int color) {
+        mShadowColor = color;
+    }
+
+    @Override
+    public int getShadowColor() {
+        return mShadowColor;
+    }
+
+    @Override
+    public boolean isDrawShadowEnabled() {
+        return mDrawShadow;
+    }
+
+    public void setDrawShadow(boolean mDrawShadow) {
+        this.mDrawShadow = mDrawShadow;
     }
 }

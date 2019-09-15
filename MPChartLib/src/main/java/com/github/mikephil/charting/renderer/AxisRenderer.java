@@ -291,4 +291,11 @@ public abstract class AxisRenderer extends Renderer {
      * @param c
      */
     public abstract void renderLimitLines(Canvas c);
+
+    /**
+     * Draws the Limit Bottom Lines associated with this axis to the screen.
+     *  画底端的线
+     * @param c
+     */
+    public void renderLimitBottomLines(Canvas c){}
 }

@@ -55,4 +55,16 @@ public interface ILineRadarDataSet<T extends Entry> extends ILineScatterCandleRa
      * @param enabled
      */
     void setDrawFilled(boolean enabled);
+
+    /**
+     * Returns true if shadow drawing is enabled, false if not
+     *
+     * @return
+     */
+    boolean isDrawShadowEnabled();
+    /**
+     * Returns the color that is used for shadow.
+     * @return
+     */
+    int getShadowColor();
 }
