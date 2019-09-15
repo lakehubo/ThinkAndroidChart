@@ -28,7 +28,6 @@ public class SmoothingLineActivity extends AppCompatActivity {
         tfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
 
         chart = findViewById(R.id.chart1);
-//        chart.setViewPortOffsets(0, 0, 0, 0);
 
         // no description text
         chart.getDescription().setEnabled(false);
@@ -43,15 +42,12 @@ public class SmoothingLineActivity extends AppCompatActivity {
 
         // if disabled, scaling can be done on x- and y-axis separately
         chart.setPinchZoom(false);
-
         chart.setDrawGridBackground(false);
         chart.setMaxHighlightDistance(600);
 
         XAxis x = chart.getXAxis();
-//        x.setEnabled(true);
         x.setPosition(XAxis.XAxisPosition.BOTTOM);
         x.setLabelCount(8);
-//        x.setCenterAxisLabels(true);
         x.setValueFormatter(new TimeValueFormatter());
         x.setDrawGridLines(false);
         x.setLabelXOffset(1f);
@@ -70,17 +66,14 @@ public class SmoothingLineActivity extends AppCompatActivity {
             x.addLimitLine(xLimitLine);
         }
 
-
         YAxis y = chart.getAxisLeft();
         y.setTypeface(tfLight);
         y.setLabelCount(6);
         y.setAxisMinimum(0);
         y.setAxisMaximum(500);
-//        y.setTextColor(Color.BLACK);
         y.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         y.setDrawGridLines(false);
         y.setTextColor(Color.parseColor("#d8d8d8"));
-//        y.setAxisLineColor(Color.BLACK);
 
         for (int i = 0; i < 2; i++) {
             LimitLine yLimitLine = new LimitLine((i + 1) * 200f);
@@ -151,7 +144,7 @@ public class SmoothingLineActivity extends AppCompatActivity {
         } else {
             shadowSet = new LineDataSet(shadowV, "DataSet 2");
             shadowSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-            shadowSet.setColor(Color.parseColor("#40000000"));
+            shadowSet.setColor(Color.parseColor("#25000000"));
             shadowSet.setCubicIntensity(0.2f);
             shadowSet.setDrawCircles(false);
             shadowSet.setDrawFilled(false);
@@ -162,7 +155,7 @@ public class SmoothingLineActivity extends AppCompatActivity {
 
             shadowSet2 = new LineDataSet(shadowV2, "DataSet 2");
             shadowSet2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-            shadowSet2.setColor(Color.parseColor("#40000000"));
+            shadowSet2.setColor(Color.parseColor("#25000000"));
             shadowSet2.setCubicIntensity(0.2f);
             shadowSet2.setDrawCircles(false);
             shadowSet2.setDrawFilled(false);
