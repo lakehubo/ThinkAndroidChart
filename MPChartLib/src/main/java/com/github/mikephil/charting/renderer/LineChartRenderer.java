@@ -207,6 +207,7 @@ public class LineChartRenderer extends LineRadarRenderer {
             float prevDy = 0f;
             float curDx = 0f;
             float curDy = 0f;
+            float midDy = 0f;//限制
 
             // Take an extra point from the left, and an extra from the right.
             // That's because we need 4 points for a cubic bezier (cubic=4), otherwise we get lines moving and doing weird stuff on the edges of the chart.
@@ -224,11 +225,11 @@ public class LineChartRenderer extends LineRadarRenderer {
 
             if (cur == null) return;
 
-            // let the spline start
-            cubicPath.moveTo(cur.getX(), cur.getY() * phaseY);
 
             for (int j = mXBounds.min + 1; j <= mXBounds.range + mXBounds.min; j++) {
-
+                cubicPath.reset();
+                // let the spline start
+                cubicPath.moveTo(cur.getX(), cur.getY() * phaseY);
                 prevPrev = prev;
                 prev = cur;
                 cur = nextIndex == j ? next : dataSet.getEntryForIndex(j);
@@ -240,40 +241,31 @@ public class LineChartRenderer extends LineRadarRenderer {
                 prevDy = (cur.getY() - prevPrev.getY()) * intensity;
                 curDx = (next.getX() - prev.getX()) * intensity;
                 curDy = (next.getY() - prev.getY()) * intensity;
-
+                mRenderPaint.setColor(dataSet.getColor());
                 cubicPath.cubicTo(prev.getX() + prevDx, (prev.getY() + prevDy) * phaseY,
                         cur.getX() - curDx,
                         (cur.getY() - curDy) * phaseY, cur.getX(), cur.getY() * phaseY);
+
+                // if filled is enabled, close the path
+                if (dataSet.isDrawFilledEnabled()) {
+                    cubicFillPath.reset();
+                    cubicFillPath.addPath(cubicPath);
+                    drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, mXBounds);
+                }
+                //模糊线条
+                if (dataSet.isDrawShadowEnabled()) {
+                    mRenderPaint.setMaskFilter(new BlurMaskFilter(12, BlurMaskFilter.Blur.NORMAL));
+                }
+                if (!dataSet.isDrawShadowEnabled() && (prev.getY() + prevDy) >= 400&&cur.getY()>400) {
+                    mRenderPaint.setColor(Color.RED);
+                }
+                mRenderPaint.setStyle(Paint.Style.STROKE);
+                trans.pathValueToPixel(cubicPath);
+                mBitmapCanvas.drawPath(cubicPath, mRenderPaint);
+                mRenderPaint.setPathEffect(null);
+                mRenderPaint.setMaskFilter(null);
             }
         }
-
-        // if filled is enabled, close the path
-        if (dataSet.isDrawFilledEnabled()) {
-
-            cubicFillPath.reset();
-            cubicFillPath.addPath(cubicPath);
-
-            drawCubicFill(mBitmapCanvas, dataSet, cubicFillPath, trans, mXBounds);
-        }
-
-        //模糊线条
-        if (dataSet.isDrawShadowEnabled()) {
-            mRenderPaint.setMaskFilter(new BlurMaskFilter(12, BlurMaskFilter.Blur.NORMAL));
-        }
-
-        mRenderPaint.setColor(dataSet.getColor());
-
-        mRenderPaint.setStyle(Paint.Style.STROKE);
-
-        trans.pathValueToPixel(cubicPath);
-
-
-
-        mBitmapCanvas.drawPath(cubicPath, mRenderPaint);
-
-        mRenderPaint.setPathEffect(null);
-
-        mRenderPaint.setMaskFilter(null);
     }
 
     protected void drawCubicFill(Canvas c, ILineDataSet dataSet, Path spline, Transformer trans, XBounds bounds) {

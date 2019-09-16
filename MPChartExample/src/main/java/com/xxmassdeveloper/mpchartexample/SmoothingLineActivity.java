@@ -96,21 +96,18 @@ public class SmoothingLineActivity extends AppCompatActivity {
     private void setData(int count, float range) {
 
         ArrayList<Entry> values = new ArrayList<>();
-
         for (int i = 0; i < count; i++) {
             float val = (float) (Math.random() * (50 + 1)) + 220;
             values.add(new Entry(i, val));
         }
 
         ArrayList<Entry> values2 = new ArrayList<>();
-
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * (50 + 1)) + 300;
+            float val = (float) (Math.random() * (150 + 1)) + 300;
             values2.add(new Entry(i, val));
         }
 
         ArrayList<Entry> shadowV2 = new ArrayList<>();
-
         for (int i = 0; i < values2.size(); i++) {
             Entry entry = values2.get(i).copy();
             float y = entry.getY();
@@ -119,7 +116,6 @@ public class SmoothingLineActivity extends AppCompatActivity {
         }
 
         ArrayList<Entry> shadowV = new ArrayList<>();
-
         for (int i = 0; i < values.size(); i++) {
             Entry entry = values.get(i).copy();
             float y = entry.getY();
@@ -177,7 +173,7 @@ public class SmoothingLineActivity extends AppCompatActivity {
             set2 = new LineDataSet(values2, "DataSet 2");
             set2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
             set2.setCubicIntensity(0.2f);
-            set2.setColor(Color.RED);
+            set2.setColor(Color.parseColor("#ffffa200"));
             set2.setDrawCircles(false);
             set2.setDrawFilled(false);
             set2.setLineWidth(1.8f);
